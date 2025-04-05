@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excursions in Japan</title>
+  <style>
+    /* Основной стиль страницы */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* Стиль для корзины */
+    #cart {
+      margin-top: 40px;
+      background-color: #fff;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    #cart h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    #cart-items {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 20px;
+    }
+
+    #cart-items li {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .remove-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .checkout-btn {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background-color: #1e8449;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+
+
+    /* Контейнер карточек */
+    .excursion-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* Карточка экскурсии */
+    .excursion-card {
+      background-color: #fff;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .excursion-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-color: #3498db;
+    }
+
+    .excursion-card.selected {
+      border-color: #e67e22;
+      box-shadow: 0 4px 10px rgba(230, 126, 34, 0.5);
+    }
+
+    /* Контейнер для изображения с позицией для цены */
+    .img-container {
+      position: relative;
+    }
+
+    .excursion-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .price {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 5px 10px;
+      color: red;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .excursion-card h2 {
+      margin: 10px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+
+    .excursion-card p {
+      margin: 10px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .excursion-card button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .excursion-card button:hover {
+      background-color: #1d6fa5;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Excursions in Japan</h1>
+  </header>
+  <main>
+    <!-- Корзина -->
+    <div id="cart">
+      <h2>Cart</h2>
+      <ul id="cart-items"></ul>
+      <p>Total: $<span id="total-price">0</span></p>
+      <button class="checkout-btn">Checkout</button>
+    </div>
+    <!-- Контейнер карточек -->
+    <div class="excursion-container">
+      <!-- Карточка: Tokyo Tour -->
+      <div class="excursion-card" data-price="100">
+        <div class="img-container">
+          <img src="./img/price/токие.jpg" alt="Tokyo Tour" />
+          <span class="price">$100</span>
+        </div>
+        <h2>Tokyo Tour</h2>
+        <p>Explore the bustling capital of Japan, including Shibuya and Asakusa.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Kyoto Tour -->
+      <div class="excursion-card" data-price="120">
+        <div class="img-container">
+          <img src="./img/price/киото.jpeg" alt="Kyoto Tour" />
+          <span class="price">$120</span>
+        </div>
+        <h2>Kyoto Tour</h2>
+        <p>Discover the ancient temples and traditions of Kyoto.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Osaka Tour -->
+      <div class="excursion-card" data-price="90">
+        <div class="img-container">
+          <img src="./img/price/осаки.jpg" alt="Osaka Tour" />
+          <span class="price">$90</span>
+        </div>
+        <h2>Osaka Tour</h2>
+        <p>Enjoy the vibrant nightlife and delicious street food of Osaka.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Nikko Tour -->
+      <div class="excursion-card" data-price="110">
+        <div class="img-container">
+          <img src="./img/price/хокайдо.jpg" alt="Nikko Tour" />
+          <span class="price">$110</span>
+        </div>
+        <h2>Nikko Tour</h2>
+        <p>Experience the serene beauty of Nikko's UNESCO World Heritage sites.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Новые карточки -->
+      <!-- Карточка: Yokohama Tour -->
+      <div class="excursion-card" data-price="95">
+        <div class="img-container">
+          <img src="./img/price/йокогамы.jpg" alt="Yokohama Tour" />
+          <span class="price">$95</span>
+        </div>
+        <h2>Yokohama Tour</h2>
+        <p>Discover the modern charm and maritime spirit of Yokohama.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Kobe Tour -->
+      <div class="excursion-card" data-price="105">
+        <div class="img-container">
+          <img src="./img/price/кобе.jpg" alt="Kobe Tour" />
+          <span class="price">$105</span>
+        </div>
+        <h2>Kobe Tour</h2>
+        <p>Explore the stylish city of Kobe and its renowned beef cuisine.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Nagasaki Tour -->
+      <div class="excursion-card" data-price="115">
+        <div class="img-container">
+          <img src="./img/price/нагасаки.jpg" alt="Nagasaki Tour" />
+          <span class="price">$115</span>
+        </div>
+        <h2>Nagasaki Tour</h2>
+        <p>Learn about the rich history and culture of Nagasaki.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Nara Tour -->
+      <div class="excursion-card" data-price="100">
+        <div class="img-container">
+          <img src="./img/price/нара.jpg" alt="Nara Tour" />
+          <span class="price">$100</span>
+        </div>
+        <h2>Nara Tour</h2>
+        <p>Experience the tranquility and ancient heritage of Nara.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Okinawa Tour -->
+      <div class="excursion-card" data-price="130">
+        <div class="img-container">
+          <img src="./img/price/окинава.jpg" alt="Okinawa Tour" />
+          <span class="price">$130</span>
+        </div>
+        <h2>Okinawa Tour</h2>
+        <p>Enjoy the tropical paradise and crystal-clear waters of Okinawa.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Fukuoka Tour -->
+      <div class="excursion-card" data-price="85">
+        <div class="img-container">
+          <img src="./img/price/фукуори.jpeg" alt="Fukuoka Tour" />
+          <span class="price">$85</span>
+        </div>
+        <h2>Fukuoka Tour</h2>
+        <p>Explore the dynamic city life and historic sites of Fukuoka.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Hiroshima Tour -->
+      <div class="excursion-card" data-price="125">
+        <div class="img-container">
+          <img src="./img/price/хиросимы.jpeg" alt="Hiroshima Tour" />
+          <span class="price">$125</span>
+        </div>
+        <h2>Hiroshima Tour</h2>
+        <p>Discover the moving history and beautiful peace parks of Hiroshima.</p>
+        <button>Book Now</button>
+      </div>
+      <!-- Карточка: Hokkaido Tour -->
+      <div class="excursion-card" data-price="140">
+        <div class="img-container">
+          <img src="./img/price/хокайдо.jpg" alt="Hokkaido Tour" />
+          <span class="price">$140</span>
+        </div>
+        <h2>Hokkaido Tour</h2>
+        <p>Experience the breathtaking landscapes and winter sports in Hokkaido.</p>
+        <button>Book Now</button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2024 Excursions in Japan. All rights reserved.</p>
+  </footer>
+  <script>
+    const cards = document.querySelectorAll('.excursion-card');
+    const cartItems = document.getElementById('cart-items');
+    const totalPriceEl = document.getElementById('total-price');
+    let cart = [];
+
+    function updateCart() {
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${item.title} - $${item.price}
+          <button class="remove-btn" data-index="${index}">Remove</button>
+        `;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+
+      totalPriceEl.textContent = total.toFixed(2);
+      addRemoveListeners();
+    }
+
+    function addRemoveListeners() {
+      const removeButtons = document.querySelectorAll('.remove-btn');
+      removeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(e.target.dataset.index);
+          const titleToRemove = cart[index].title;
+
+          // Убираем выделение у карточки
+          cards.forEach(card => {
+            if (card.dataset.title === titleToRemove) {
+              card.classList.remove('selected');
+            }
+          });
+
+          cart.splice(index, 1);
+          updateCart();
+        });
+      });
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.tagName.toLowerCase() === 'button') return;
+
+        const title = card.dataset.title;
+        const price = parseFloat(card.dataset.price);
+
+        if (card.classList.contains('selected')) {
+          // Удаляем из корзины
+          cart = cart.filter(item => item.title !== title);
+          card.classList.remove('selected');
+        } else {
+          // Добавляем в корзину
+          cart.push({ title, price });
+          card.classList.add('selected');
+        }
+        updateCart();
+      });
+    });
+
+    // Обработчик кнопки "Checkout"
+    document.querySelector('.checkout-btn').addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+    } else {
+      alert('Thank you for your order!');
+      cart = [];
+      cards.forEach(card => card.classList.remove('selected'));
+      updateCart();
+    }
+    });
+  </script>
+</body>
+</html>
